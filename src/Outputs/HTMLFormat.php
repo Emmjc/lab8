@@ -10,15 +10,13 @@ class HTMLFormat implements ProfileFormatter
 
     public function setData($profile)
     {
-        // Assuming your CSS is in the "public" directory of your web app
+
         $output = '<!DOCTYPE html>';
         $output .= '<html lang="en">';
         $output .= '<head>';
         $output .= '<meta charset="UTF-8">';
         $output .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
         $output .= '<title>' . $profile->getTitle() . '</title>';
-        
-        // Link to your external CSS file (adjust the path based on where you placed the CSS)
         $output .= '<link rel="stylesheet" href="../src/styles.css">'; 
         
         $output .= '</head>';
