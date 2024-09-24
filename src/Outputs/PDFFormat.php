@@ -13,58 +13,32 @@ class PDFFormat implements ProfileFormatter
     {
         $this->pdf = new Fpdf();
         $this->pdf->AddPage();
+        
+        // Set Title
         $this->pdf->SetFont('Arial', 'B', 16);
-        $this->pdf->Cell(0, 10, 'Profile of ' . $profile->getFullName(), 0, 1, 'C');
+        $this->pdf->Cell(0, 10, $profile->getTitle(), 0, 1, 'C');
 
+        // Add image (ensure the image path is valid)
+        if (file_exists($profile->getImagePath())) {
+            // Adjust size and position: x = 10, y = 20, width = 50
+            $this->pdf->Image($profile->getImagePath(), 10, 20, 40);  
+            $this->pdf->Ln(60);  // Move the cursor below the image to prevent overlap
+        } else {
+            $this->pdf->Cell(0, 10, 'Image not found.', 0, 1);
+        }
+
+        // Set Font for the body content
         $this->pdf->SetFont('Arial', '', 12);
-        $this->pdf->Cell(0, 10, 'Email: ' . $profile->getContactDetails()['email'], 0, 1);
-        $this->pdf->Cell(0, 10, 'Phone: ' . $profile->getContactDetails()['phone_number'], 0, 1);
-        
-        // Address
-        $address = implode(", ", $profile->getContactDetails()['address']);
-        $this->pdf->Cell(0, 10, 'Address: ' . $address, 0, 1);
-        
-        // Education
-        $this->pdf->Cell(0, 10, 'Education: ' . $profile->getEducation()['degree'] . ' at ' . $profile->getEducation()['university'], 0, 1);
-        
-        // Skills
-        $this->pdf->Cell(0, 10, 'Skills: ');
+
+        // Display founder's name
+        $this->pdf->Cell(0, 10, 'Founder: ' . $profile->getName(), 0, 1);
+
+        // Add story
+        $this->pdf->MultiCell(0, 10, $profile->getStory());
+
+        // Optionally add other details, such as image path
         $this->pdf->Ln();
-        foreach ($profile->getSkills() as $skill) {
-            $this->pdf->Cell(0, 10, '- ' . $skill, 0, 1);
-        }
-
-        // Experience
-        $this->pdf->Cell(0, 10, 'Experience:', 0, 1);
-        foreach ($profile->getExperience() as $job) {
-            $this->pdf->Cell(0, 10, '- ' . $job['job_title'] . ' at ' . $job['company'] . ' (' . $job['start_date'] . ' to ' . $job['end_date'] . ')', 0, 1);
-        }
-        
-        // Certifications
-        $this->pdf->Cell(0, 10, 'Certifications:', 0, 1);
-        foreach ($profile->getCertifications() as $certification) {
-            $this->pdf->Cell(0, 10, '- ' . $certification['name'] . ' (Earned on: ' . $certification['date_earned'] . ')', 0, 1);
-        }
-
-        // Extracurricular Activities
-        $this->pdf->Cell(0, 10, 'Extracurricular Activities:', 0, 1);
-        foreach ($profile->getExtracurricularActivities() as $activity) {
-            $this->pdf->Cell(0, 10, '- ' . $activity['role'] . ' at ' . $activity['organization'] . ' (' . $activity['start_date'] . ' to ' . $activity['end_date'] . ')', 0, 1);
-            $this->pdf->Cell(0, 10, '  Description: ' . $activity['description'], 0, 1);
-        }
-
-        // Languages
-        $this->pdf->Cell(0, 10, 'Languages:', 0, 1);
-        foreach ($profile->getLanguages() as $language) {
-            $this->pdf->Cell(0, 10, '- ' . $language['language'] . ' (' . $language['proficiency'] . ')', 0, 1);
-        }
-
-        // References
-        $this->pdf->Cell(0, 10, 'References:', 0, 1);
-        foreach ($profile->getReferences() as $reference) {
-            $this->pdf->Cell(0, 10, '- ' . $reference['name'] . ', ' . $reference['position'] . ' at ' . $reference['company'], 0, 1);
-            $this->pdf->Cell(0, 10, '  Email: ' . $reference['email'] . ', Phone: ' . $reference['phone_number'], 0, 1);
-        }
+        $this->pdf->Cell(0, 10, 'Image Path: ' . $profile->getImagePath(), 0, 1);
     }
 
     public function render()
