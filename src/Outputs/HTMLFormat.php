@@ -22,7 +22,34 @@ class HTMLFormat implements ProfileFormatter
         foreach ($profile->getExperience() as $job) {
             $output .= "<li>" . $job['job_title'] . " at " . $job['company'] . " (" . $job['start_date'] . " to " . $job['end_date'] . ")</li>";
         }
+        $output .= "</ul>";
+        // Adding Certifications
+        $output .= "<h2>Certifications</h2><ul>";
+        foreach ($profile->getCertifications() as $cert) {
+            $output .= "<li>" . $cert['name'] . " (Earned on: " . $cert['date_earned'] . ")</li>";
+        }
+        $output .= "</ul>";
 
+        // Adding Extracurricular Activities
+        $output .= "<h2>Extracurricular Activities</h2><ul>";
+        foreach ($profile->getExtracurricularActivities() as $activity) {
+            $output .= "<li>" . $activity['role'] . " at " . $activity['organization'] . " (" . $activity['start_date'] . " to " . $activity['end_date'] . ") - " . $activity['description'] . "</li>";
+        }
+        $output .= "</ul>";
+        
+        // Adding Languages
+        $output .= "<h2>Languages</h2><ul>";
+        foreach ($profile->getLanguages() as $language) {
+            $output .= "<li>" . $language['language'] . " (" . $language['proficiency'] . ")</li>";
+        }
+        $output .= "</ul>";
+
+        // Adding References
+        $output .= "<h2>References</h2><ul>";
+        foreach ($profile->getReferences() as $reference) {
+            $output .= "<li>" . $reference['name'] . ", " . $reference['position'] . " at " . $reference['company'] . 
+                    " (Email: " . $reference['email'] . ", Phone: " . $reference['phone_number'] . ")</li>";
+        }
         $output .= "</ul>";
         $this->response = $output;
     }
