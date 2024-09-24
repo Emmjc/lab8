@@ -14,7 +14,6 @@ class PDFFormat implements ProfileFormatter
         $this->pdf = new Fpdf();
         $this->pdf->AddPage();
         
-
         $this->pdf->SetFont('Arial', 'B', 16);
         $this->pdf->Cell(0, 10, $profile->getTitle(), 0, 1, 'C');
         if (file_exists($profile->getImagePath())) {
@@ -35,6 +34,7 @@ class PDFFormat implements ProfileFormatter
 
         $this->pdf->Ln();
         $this->pdf->Cell(0, 10, 'Image Path: ' . $profile->getImagePath(), 0, 1);
+
     }
 
     public function render()
